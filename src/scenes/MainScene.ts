@@ -1,4 +1,3 @@
-
 export default class MainScene extends Phaser.Scene {
   player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys
@@ -15,11 +14,13 @@ export default class MainScene extends Phaser.Scene {
   preload() {}
 
   create() {
+    // this.tool1 = scene.physics.add.group({ allowGravity: false })
 
     //  x, y = center of the path
     //  width, height = size of the elliptical path
     //  speed = speed the sprite moves along the path per frame
 
+    //Set worldbounds
     this.physics.world.setBounds(0, 0, 10000, 460)
     this.cursors = this.input.keyboard.createCursorKeys()
 
@@ -50,20 +51,22 @@ export default class MainScene extends Phaser.Scene {
     //   .setScale(0.8)
     //   .refreshBody()
 
-    // this.table.body.checkCollision.down = false
+    this.sewer.body.checkCollision.down = false
+    this.sewer.body.checkCollision.down = false
+
 
     // platform.body.checkCollision.down = false
 
     //player
     this.player = this.physics.add
-      .sprite(400, 300, 'popcorn')
+      .sprite(150, 300, 'popcorn')
       .setScale(0.7)
       .refreshBody()
 
     this.player.body.checkCollision.right = true
     this.player.body.checkCollision.left = true
 
-    this.player.setBounce(0.2)
+    this.player.setBounce(0)
     this.player.setCollideWorldBounds(true)
 
     this.anims.create({
@@ -92,6 +95,7 @@ export default class MainScene extends Phaser.Scene {
     // Collision
     this.physics.add.collider(this.player, this.wallbottom)
     this.physics.add.collider(this.player, this.walltop)
+    this.physics.add.collider(this.player, this.sewer)
 
     // //tool1
     // this.tool1 = this.physics.add.group({

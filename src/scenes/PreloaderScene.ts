@@ -11,6 +11,12 @@ export default class PreloaderScene extends Phaser.Scene {
     })
     this.load.image('sewer', '/assets/img/sewer.png')
     this.load.image('tool', '/assets/img/tool.png')
+    this.load.image('platform-1', '/assets/img/platform-1.png')
+    this.load.image('platform-2', '/assets/img/platform-2.png')
+    this.load.image('platform-3', '/assets/img/platform-3.png')
+    this.load.image('platform-4', '/assets/img/platform-4.png')
+    this.load.image('platform-5', '/assets/img/platform-5.png')
+
   }
 
   create() {
