@@ -1,4 +1,3 @@
-import { flyingtool } from './flyingtool'
 
 export default class MainScene extends Phaser.Scene {
   player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
@@ -16,15 +15,11 @@ export default class MainScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.stars = scene.physics.add.group({ allowGravity: false })
 
     //  x, y = center of the path
     //  width, height = size of the elliptical path
     //  speed = speed the sprite moves along the path per frame
-    this.tool1.add(new FlyingStar(scene, 150, 100, 100, 100, 0.005), true)
-    this.tool1.add(new FlyingStar(scene, 500, 200, 40, 100, 0.005), true)
-    this.tool1.add(new FlyingStar(scene, 600, 200, 40, 100, -0.005), true)
-    this.tool1.add(new FlyingStar(scene, 700, 200, 40, 100, 0.01), true)
+
     this.physics.world.setBounds(0, 0, 10000, 460)
     this.cursors = this.input.keyboard.createCursorKeys()
 
