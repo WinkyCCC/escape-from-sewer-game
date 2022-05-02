@@ -9,7 +9,7 @@ const config: Phaser.Types.Core.GameConfig = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     width: 800,
-    height: 400,
+    height: 500,
     zoom: 1,
   },
   physics: {
@@ -21,6 +21,5 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scene: [PreloaderScene, MainScene],
 }
-
 
 export default new Phaser.Game(config)

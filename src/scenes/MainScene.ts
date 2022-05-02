@@ -1,8 +1,8 @@
+import { flyingtool } from './flyingtool'
+
 export default class MainScene extends Phaser.Scene {
   player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys
-  table!: Phaser.GameObjects.Image
-  wall!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
   sewer!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
   speed = 1
   walltop!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
@@ -16,46 +16,57 @@ export default class MainScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.physics.world.setBounds(0, 0, 10000, 300)
+    this.stars = scene.physics.add.group({ allowGravity: false })
+
+    //  x, y = center of the path
+    //  width, height = size of the elliptical path
+    //  speed = speed the sprite moves along the path per frame
+    this.tool1.add(new FlyingStar(scene, 150, 100, 100, 100, 0.005), true)
+    this.tool1.add(new FlyingStar(scene, 500, 200, 40, 100, 0.005), true)
+    this.tool1.add(new FlyingStar(scene, 600, 200, 40, 100, -0.005), true)
+    this.tool1.add(new FlyingStar(scene, 700, 200, 40, 100, 0.01), true)
+    this.physics.world.setBounds(0, 0, 10000, 460)
     this.cursors = this.input.keyboard.createCursorKeys()
 
     this.add.image(0, 0, 'background').setOrigin(0, 0)
-    this.add.image(80, 200, 'toilet').setOrigin(0, 0).setScale(0.7)
-    this.add.image(0, 0, 'bed').setOrigin(0, 0).setScale(0.3)
-    this.add.image(0, 0, 'sewer').setOrigin(0, 0).setScale(0.3)
-    this.add.image(180, 200, 'basin').setOrigin(0, 0).setScale(0.3)
+    // this.add.image(80, 200, 'toilet').setOrigin(0, 0).setScale(0.7)
+    // this.add.image(700, 100, 'window').setOrigin(0, 0).setScale(0.6)
+    // this.add.image(1000, 100, 'window').setOrigin(0, 0).setScale(0.6)
+    // this.add.image(800, 220, 'bed').setOrigin(0, 0).setScale(0.5)
+    // this.add.image(180, 200, 'basin').setOrigin(0, 0).setScale(0.7)
+
     this.sewer = this.physics.add
-      .staticImage(250, 320, 'sewer')
+      .staticImage(100, 380, 'sewer')
       .setOrigin(0, 0)
-      .setScale(0.7)
+      .setScale(1)
       .refreshBody()
 
-    //wall-top
-    this.walltop = this.physics.add
-      .staticImage(400, 80, 'wall-top')
-      .setOrigin(0, 0)
-      .setScale(0.8)
-      .refreshBody()
+    // //wall-top
+    // this.walltop = this.physics.add
+    //   .staticImage(400, 80, 'wall-top')
+    //   .setOrigin(0, 0)
+    //   .setScale(0.8)
+    //   .refreshBody()
 
-    //wall-bottom
-    this.wallbottom = this.physics.add
-      .staticImage(400, 200, 'wall-bottom')
-      .setOrigin(0, 0)
-      .setScale(0.8)
-      .refreshBody()
+    // //wall-bottom
+    // this.wallbottom = this.physics.add
+    //   .staticImage(400, 200, 'wall-bottom')
+    //   .setOrigin(0, 0)
+    //   .setScale(0.8)
+    //   .refreshBody()
 
-    //table
-    this.table = this.physics.add
-      .staticImage(550, 250, 'table')
-      .setOrigin(0, 0)
-      .setScale(0.6)
-      .refreshBody()
+    // this.table.body.checkCollision.down = false
+
+    // platform.body.checkCollision.down = false
 
     //player
     this.player = this.physics.add
-      .sprite(400, 800, 'popcorn')
-      .setScale(0.5)
+      .sprite(400, 300, 'popcorn')
+      .setScale(0.7)
       .refreshBody()
+
+    this.player.body.checkCollision.right = true
+    this.player.body.checkCollision.left = true
 
     this.player.setBounce(0.2)
     this.player.setCollideWorldBounds(true)
@@ -84,23 +95,23 @@ export default class MainScene extends Phaser.Scene {
     this.player.anims.play('turn', true)
 
     // Collision
-    this.physics.add.collider(this.player, this.table)
     this.physics.add.collider(this.player, this.wallbottom)
     this.physics.add.collider(this.player, this.walltop)
 
+    // //tool1
+    // this.tool1 = this.physics.add.group({
+    //   key: 'tool',
+    //   repeat: 1,
+    //   setXY: { x: 300, y: 0, stepX: 70 },
+    // })
 
-    //tool1
-    this.tool1 = this.physics.add.group({
-      key: 'tool1',
-      repeat: 1,
-      setXY: { x: 300, y: 0, stepX: 70 },
-    })
+    this.cameras.main.startFollow(this.player, false, 1, 0)
+    this.cameras.main.setZoom(0.9)
 
-    this.tool1.children.iterate(function (child) {
-      child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8))
-    })
-
-    this.cameras.main.startFollow(this.player)
+    //how to collect tools?
+    // collecttool(this.player, this.tool1); {
+    //   this.tool1.destroy(true, true)
+    // }
   }
 
   update() {
@@ -114,8 +125,13 @@ export default class MainScene extends Phaser.Scene {
       this.player.setVelocityX(0)
       this.player.anims.play('turn')
     }
-    if (this.cursors.up.isDown && this.player.body.touching.down) {
-      this.player.setVelocityY(-330)
+
+    if (this.cursors.up.isDown) {
+      console.log('here')
+      this.player.setVelocityY(-160)
     }
   }
 }
+// function collecttool(player: any, tools: any) {
+//   throw new Error('Function not implemented.')
+// }
