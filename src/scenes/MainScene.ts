@@ -1,22 +1,24 @@
 export default class MainScene extends Phaser.Scene {
-  DEBUG_SPEED = 5
+  DEBUG_SPEED = 8
 
-  player!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys
   sewer!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
-  walltop!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
-  wallbottom!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
-  tool1!: Phaser.Physics.Arcade.Group
   platform1!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
-  platform2!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
-  platform3!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
   platform4!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
-  platform5!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
-  platform31!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
   people!: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
   tool!: Phaser.Physics.Arcade.Group
-  platformGroup: Phaser.GameObjects.Group
-  wall: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  wall!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  floor!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_1!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_2!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_3!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_4!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_5!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_6!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_9!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_8!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  platform4_7!: Phaser.Types.Physics.Arcade.ImageWithStaticBody
+  player: GameObject | Group | GameObject[] | Group[]
 
   constructor() {
     super('game')
@@ -42,6 +44,7 @@ export default class MainScene extends Phaser.Scene {
     // this.bgMusic.play()
 
     //Wall
+    // this.physics.add.collider(this.player, this.wall)
     this.wall = this.physics.add
       .staticImage(660, 380, 'wall')
       .setScale(1)
@@ -66,64 +69,63 @@ export default class MainScene extends Phaser.Scene {
       .staticImage(4180, 110, 'wall')
       .setScale(1.5)
       .refreshBody()
-    // this.physics.add.collider(this.player, this.wall)
 
     //Platform
-    this.platform4 = this.physics.add
+    this.floor = this.physics.add
+      .staticImage(300, 550, 'floor')
+      .setScale(1)
+      .refreshBody()
+
+    this.platform4_1 = this.physics.add
       .staticImage(380, 320, 'platform-4')
       .setScale(0.7)
-      .refreshBody()
-    this.platform4 = this.physics.add
+    this.platform4_2 = this.physics.add
       .staticImage(150, 400, 'platform-4')
       .setScale(0.7)
       .refreshBody()
-
-    // this.platform4
-    //   .staticImage(1100, 250, 'platform-4')
-    //   .setOrigin(0, 0)
-    //   .setScale(1)
-    //   .refreshBody()
-
-    // this.platform4 = this.physics.add
-    //   .staticImage(1400, 100, 'platform-4')
-    //   .setOrigin(0, 0)
-    //   .setScale(1)
-
-    // this.platform5 = this.physics.add
-    //   .staticImage(1530, 370, 'platform-5')
-    //   .setOrigin(0, 0)
-    //   .setScale(1)
-    //   .refreshBody()
-
-    // this.platform4 = this.physics.add
-    //   .staticImage(2200, 330, 'platform-4')
-    //   .setOrigin(0, 0)
-    //   .setScale(1)
-
-    // //wall-top
-    this.walltop = this.physics.add
-      .staticImage(400, 80, 'wall-top')
-      .setOrigin(0, 0)
-      .setScale(0.8)
+    this.platform4_3 = this.physics.add
+      .staticImage(890, 280, 'platform-4')
+      .setScale(0.7)
       .refreshBody()
-
-    this.sewer.body.checkCollision.down = false
-    this.sewer.body.checkCollision.down = false
-
-    // platform.body.checkCollision.down = false
-
-    //player
-    this.player = this.physics.add
-      .sprite(150, 300, 'popcorn')
+    this.platform4_4 = this.physics.add
+      .staticImage(1120, 280, 'platform-4')
+      .setScale(1.1)
+      .refreshBody()
+    this.platform4_5 = this.physics.add
+      .staticImage(1120, 160, 'platform-4')
+      .setScale(1.1)
+      .refreshBody()
+    this.platform4_6 = this.physics.add
+      .staticImage(1120, 440, 'platform-4')
+      .setScale(1.1)
+      .refreshBody()
+    this.platform4_7 = this.physics.add
+      .staticImage(1580, 440, 'platform-4')
+      .setScale(1.4)
+      .refreshBody()
+    this.platform4_8 = this.physics.add
+      .staticImage(1800, 440, 'platform-4')
+      .setScale(1.4)
+      .refreshBody()
+    this.platform4_9 = this.physics.add
+      .staticImage(1530, 300, 'platform-4')
       .setScale(0.7)
       .refreshBody()
 
-    this.player.body.checkCollision.right = true
-    this.player.body.checkCollision.left = true
+    // this.physics.add.collider(this.people, this.platform4_5)
+    // this.physics.add.collider(this.player, this.platform4_1)
 
-    this.player.setBounce(0)
+    //Player
+    this.player = this.physics.add
+      .sprite(150, 300, 'popcorn')
+      .setScale(0.8)
+      .refreshBody()
+
+    this.player.body.setGravityY(200)
+
     this.player.setCollideWorldBounds(true)
 
+    //Player Animation
     this.anims.create({
       key: 'popcorn-left',
       frames: this.anims.generateFrameNumbers('popcorn', { start: 3, end: 5 }),
@@ -147,17 +149,35 @@ export default class MainScene extends Phaser.Scene {
 
     this.player.anims.play('popcorn-turn', true)
 
+    //Collect Tool
+    this.physics.add.overlap(
+      this.player,
+      this.tool,
+      this.collectTool,
+      undefined,
+      this,
+    )
+
     //People
     this.people = this.physics.add
-      .sprite(1646, 195, 'people')
+      .sprite(1646, 250, 'people')
       // .sprite(100, 195, 'people')
       .setScale(1)
       .refreshBody()
 
     this.people.setCollideWorldBounds(true)
-    this.physics.add.collider(this.people, this.platform5)
-    // this.physics.add.collider(this.people)
 
+    this.physics.add.collider(this.people, this.platform4)
+
+    // this.physics.add.overlap(
+    //   this.player,
+    //   this.people,
+    //   this.PeopleInterrupt,
+    //   undefined,
+    //   this,
+    // )
+
+    //People Animation
     this.anims.create({
       key: 'people-turn',
       frames: this.anims.generateFrameNumbers('people', {
@@ -175,18 +195,13 @@ export default class MainScene extends Phaser.Scene {
     //tool
     this.tool = this.physics.add.group({
       key: 'tool',
-      repeat: 1,
-      setXY: { x: 300, y: 0, stepX: 70 },
+      repeat: 13,
+      setXY: { x: 300, y: 0, stepX: 500 },
     })
-    // this.tool = this.setCollideWorldBounds(true)
+    this.physics.add.collider(this.tool, this.floor)
 
     this.cameras.main.startFollow(this.player, false, 1, 0)
     this.cameras.main.setZoom(1)
-
-    //how to collect tools?
-    // collecttool(this.player, this.tool1); {
-    //   this.tool1.destroy(true, true)
-    // }
   }
 
   update() {
@@ -201,14 +216,33 @@ export default class MainScene extends Phaser.Scene {
       this.player.anims.play('popcorn-turn')
     }
 
-    // FIXME: this.player.body.touching.down
+    //this.player.body.touching.down
     if (
       this.cursors.up.isDown &&
       (this.player.body.onFloor() || this.player.body.touching.down)
     ) {
       console.log('here')
-      this.player.setVelocityY(-160)
+      this.player.setVelocityY(-330)
     }
+
+    // if checkOverlap(this.people, this.player)
+    // {
+
+    // }
+  }
+
+  private collectTool(
+    _player: Phaser.GameObjects.GameObject,
+    tool: Phaser.GameObjects.GameObject,
+  ) {
+    tool.destroy()
+  }
+
+  private checkOverlap(
+    _player: Phaser.GameObjects.GameObject,
+    _people: Phaser.GameObjects.GameObject,
+  ) {
+    play
   }
 }
 // function collecttool(player: any, tools: any) {

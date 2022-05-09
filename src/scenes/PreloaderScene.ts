@@ -19,20 +19,15 @@ export default class PreloaderScene extends Phaser.Scene {
       frameHeight: 21,
     })
 
-//Sewer
+    //Sewer
     this.load.image('sewer', '/assets/img/sewer.png')
 
     //Platform
-    this.load.image('platform-1', '/assets/img/platform-1.png')
-    this.load.image('platform-2', '/assets/img/platform-2.png')
-    this.load.image('platform-3', '/assets/img/platform-3.png')
-    this.load.image('platform-3-1', '/assets/img/platform-3.png')
     this.load.image('platform-4', '/assets/img/platform-4.png')
-    this.load.image('platform-5', '/assets/img/platform-5.png')
+    this.load.image('floor', '/assets/img/floor.png')
 
     //Wall
     this.load.image('wall', '/assets/img/wall.png')
-
 
     this.load.spritesheet('people', '/assets/img/people.png', {
       frameWidth: 149,
