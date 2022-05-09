@@ -1,6 +1,8 @@
 import 'phaser'
 import MainScene from './scenes/MainScene'
 import PreloaderScene from './scenes/PreloaderScene'
+import GameOpenScene from './scenes/GameOpenScene'
+import GameStartScene from './scenes/GameStartScene'
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -9,7 +11,7 @@ const config: Phaser.Types.Core.GameConfig = {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     width: 800,
-    height: 500,
+    height: 530,
     zoom: 1,
   },
   physics: {
@@ -19,7 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: true,
     },
   },
-  scene: [PreloaderScene, MainScene],
+  scene: [PreloaderScene, MainScene, GameOpenScene, GameStartScene],
 }
 
 export default new Phaser.Game(config)
